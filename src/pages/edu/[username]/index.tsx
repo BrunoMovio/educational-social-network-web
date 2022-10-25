@@ -100,6 +100,7 @@ export default function Profile({ profileData }: ProfileProps) {
                 <RepositoryCard
                   key={repository.id}
                   repositoryCard={repository}
+                  username={username}
                 />
                 <Divider />
               </>

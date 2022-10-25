@@ -41,7 +41,7 @@ export function Header() {
         </Link>
 
         {logged && (
-          <Link href="/profile">
+          <Link href={`/edu/${user?.nickname}`}>
             <HStack spacing="1rem">
               <Box
                 textAlign="right"
