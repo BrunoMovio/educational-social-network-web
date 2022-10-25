@@ -8,7 +8,7 @@ import {
 import { AppStrings } from "@src/strings";
 
 interface HomeSideMenuProps {
-  username: string;
+  username?: string;
 }
 
 const strings = AppStrings.Home.sideMenu;

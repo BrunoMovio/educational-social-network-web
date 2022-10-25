@@ -34,7 +34,7 @@ export const HomeRecommendationCard = (props: HomeRecommendationCardProps) => {
   return (
     <>
       <Box alignItems="center" mb="1rem">
-        <Link href={`/edu/${props.username}/${repositoryTitle}`}>
+        <Link href={`/edu/${props?.username}/${repositoryTitle}`}>
           <Heading textAlign="left" fontSize="xs">
             {repositoryTitle}
           </Heading>

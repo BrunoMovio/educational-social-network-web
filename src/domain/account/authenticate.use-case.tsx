@@ -42,8 +42,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
     }
 
-    getUserFromToken();
-  }, []);
+    if (!user) {
+      getUserFromToken();
+    }
+  }, [user]);
 
   const login = async ({ email, password }: LoginAccountFormData) => {
     try {
