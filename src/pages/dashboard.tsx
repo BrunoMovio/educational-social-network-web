@@ -81,7 +81,7 @@ const { mainHomePosts, mainRecommendationsPosts }: HomeData = {
     },
     {
       id: "1232-9502-8532",
-      username: "fe-jcorreia",
+      username: "gigi97princess",
       creationDate: "2022-07-29",
       lastUpdateDate: "2022-08-17",
       repositoryTitle: "sistemas-operacionais",
@@ -91,7 +91,7 @@ const { mainHomePosts, mainRecommendationsPosts }: HomeData = {
     },
     {
       id: "1232-9502-8533",
-      username: "fe-jcorreia",
+      username: "tamy_takara",
       creationDate: "2022-07-29",
       lastUpdateDate: "2022-08-17",
       repositoryTitle: "sistemas-operacionais",
