@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "@src/components";
 import React from "react";
 import { AppStrings } from "@src/strings";
-import { SignUpAccountFormData } from "@src/model";
+import { AccountSignUpForm } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";
 
 const strings = AppStrings.SignUp;
@@ -34,14 +34,14 @@ const signInForSchema = yup.object().shape({
 
 export function SignUpCard() {
   const { register, handleSubmit, reset, formState } =
-    useForm<SignUpAccountFormData>({
+    useForm<AccountSignUpForm>({
       resolver: yupResolver(signInForSchema),
     });
   const { signUp } = useAuthenticate();
 
   const errors = formState.errors;
 
-  const handleSignUp: SubmitHandler<SignUpAccountFormData> = (credentials) => {
+  const handleSignUp: SubmitHandler<AccountSignUpForm> = (credentials) => {
     signUp({
       name: credentials.name,
       lastName: credentials.lastName,

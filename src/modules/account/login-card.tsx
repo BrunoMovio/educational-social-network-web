@@ -20,7 +20,7 @@ import { Input } from "@src/components";
 import React from "react";
 import { SignUpCard } from "./signup-card";
 import { AppStrings } from "@src/strings";
-import { LoginAccountFormData } from "@src/model";
+import { AccountLoginForm } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";
 
 const strings = AppStrings.Login;
@@ -41,7 +41,7 @@ const signInForSchema = yup.object().shape({
 
 export function LoginCard() {
   const { register, handleSubmit, reset, formState } =
-    useForm<LoginAccountFormData>({
+    useForm<AccountLoginForm>({
       resolver: yupResolver(signInForSchema),
     });
 
@@ -52,7 +52,7 @@ export function LoginCard() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
 
-  const handleLogin: SubmitHandler<LoginAccountFormData> = (credentials) => {
+  const handleLogin: SubmitHandler<AccountLoginForm> = (credentials) => {
     login({ email: credentials.email, password: credentials.password });
 
     reset();

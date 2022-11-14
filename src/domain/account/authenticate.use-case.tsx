@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginAccountFormData, SignUpAccountFormData, User } from "@src/model";
+import { AccountLoginForm, AccountSignUpForm, User } from "@src/model";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { api, nextApi } from "@src/services";
@@ -10,8 +10,8 @@ interface UseAuthenticate {
   user?: User;
   logged: boolean;
   loading: boolean;
-  login: (params: LoginAccountFormData) => void;
-  signUp: (params: SignUpAccountFormData) => void;
+  login: (params: AccountLoginForm) => void;
+  signUp: (params: AccountSignUpForm) => void;
   logout: () => void;
 }
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Router.reload();
   };
 
-  const login = async ({ email, password }: LoginAccountFormData) => {
+  const login = async ({ email, password }: AccountLoginForm) => {
     try {
       setLoading(true);
       const userCredential = await signInWithEmailAndPassword(
@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     username,
     email,
     password,
-  }: SignUpAccountFormData) => {
+  }: AccountSignUpForm) => {
     try {
       setLoading(true);
       const completeName = name + " " + lastName;

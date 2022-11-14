@@ -1,9 +1,9 @@
-export type LoginAccountFormData = {
+export type AccountLoginForm = {
   email: string;
   password: string;
 };
 
-export type SignUpAccountFormData = {
+export type AccountSignUpForm = {
   name: string;
   lastName: string;
   username: string;
@@ -26,5 +26,5 @@ export type User = {
   state: string;
   country: string;
   description: string;
-  // career: string;
+  career: string;
 };
