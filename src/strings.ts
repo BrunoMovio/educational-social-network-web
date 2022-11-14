@@ -4,7 +4,7 @@ export const AppStrings = {
   Home: {
     repositoryCards: {
       sharedRepository: " compartilhou um ",
-      file: "arquivo",
+      post: "post",
       updatedAt: "Atualizado {{date}}",
     },
     postsRecommendations: {
@@ -68,7 +68,7 @@ export const AppStrings = {
   },
 
   Profile: {
-    myRepositories: "Meus repositórios",
+    myRepositories: "Repositórios",
     profileRequirements: {
       requiredName: "Nome obrigatório",
       requiredEmail: "Email obrigatório",

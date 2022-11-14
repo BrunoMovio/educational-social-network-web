@@ -1,10 +1,13 @@
 import React from "react";
 import {
+  Button,
   Divider,
   Flex,
   Grid,
   GridItem,
   Heading,
+  HStack,
+  Icon,
   Image,
   VStack,
 } from "@chakra-ui/react";
@@ -18,6 +21,7 @@ import { useAuthenticate } from "@src/domain/account";
 import Router from "next/router";
 import { api } from "@src/services";
 import { ProfileDescription } from "@src/modules/profile";
+import { FiBookmark } from "react-icons/fi";
 
 interface ProfileProps {
   userData: UserData;
@@ -61,9 +65,18 @@ export default function Profile({ userData, repositoryData }: ProfileProps) {
 
         <GridItem colStart={3} colEnd={6}>
           <VStack spacing={6} py="3rem" px="3rem" w="100%" align="start">
-            <Heading size="md" mb="2rem">
-              {strings.myRepositories}
-            </Heading>
+            <HStack spacing={4} mb="2rem">
+              <Heading size="md">{strings.myRepositories}</Heading>
+              <Button
+                leftIcon={<Icon as={FiBookmark} />}
+                colorScheme="green"
+                size="xs"
+                justifyContent="flex-end"
+                onClick={() => {}}
+              >
+                Criar
+              </Button>
+            </HStack>
             {repositories?.map((repository) => (
               <>
                 <RepositoryCard

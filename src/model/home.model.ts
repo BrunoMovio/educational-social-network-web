@@ -1,6 +1,6 @@
-import { Repository } from "./repository.model";
+import { Post } from "./repository.model";
 
-export interface HomePostCardData extends Repository {}
+export interface HomePostCardData extends Post {}
 
 export type HomeRecommendationCardData = {
   id: string;
