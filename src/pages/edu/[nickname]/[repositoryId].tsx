@@ -10,7 +10,15 @@ import {
   Icon,
   Image,
   Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
@@ -24,9 +32,11 @@ import { FiBook, FiBookmark, FiFile } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
+import { api } from "@src/services";
 
 interface RepositoryProps {
   repositoryPage: Repository;
+  posts: Post[];
 }
 
 interface ServerSideRepositoryParams extends ParsedUrlQuery {
@@ -35,8 +45,11 @@ interface ServerSideRepositoryParams extends ParsedUrlQuery {
 
 const strings = AppStrings.Home.repositoryCards;
 
-export default function RepositoryPage({ repositoryPage }: RepositoryProps) {
-  const { lastUpdateDate, stars, hasLiked, posts } = repositoryPage;
+export default function RepositoryPage({
+  repositoryPage,
+  posts,
+}: RepositoryProps) {
+  const { lastUpdateDate, stars, hasLiked } = repositoryPage;
 
   const { logged, loading } = useAuthenticate();
   const [liked, setLiked] = React.useState(hasLiked);
@@ -46,6 +59,9 @@ export default function RepositoryPage({ repositoryPage }: RepositoryProps) {
     console.log("update star");
     setLiked((prevState) => !prevState);
   };
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = React.useRef(null);
 
   React.useEffect(() => {
     if (!loading && !logged) {
@@ -68,7 +84,7 @@ export default function RepositoryPage({ repositoryPage }: RepositoryProps) {
           {post.title}
         </Heading>
         <Heading mb="0.5rem" fontSize="sm" textAlign="start">
-          {post.title}
+          {post.subtitle}
         </Heading>
         <Divider />
       </Link>
@@ -127,7 +143,7 @@ export default function RepositoryPage({ repositoryPage }: RepositoryProps) {
                   colorScheme="green"
                   size="xs"
                   justifyContent="flex-end"
-                  onClick={() => {}}
+                  onClick={onOpen}
                 >
                   Criar
                 </Button>
@@ -164,58 +180,73 @@ export default function RepositoryPage({ repositoryPage }: RepositoryProps) {
           )}
         </GridItem>
       </Grid>
+
+      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color="blue.900" fontSize="3xl">
+            Criar novo post
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>test</ModalBody>
+
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { repository } = params as ServerSideRepositoryParams;
+  const { repositoryId } = params as ServerSideRepositoryParams;
 
-  console.log("GET ", repository);
-  const response: Repository = MOCK_DATA;
+  const repositoryResponse = await api.get(`/folder/${repositoryId}`);
+  const repositoryData = repositoryResponse.data;
+
+  const response: Repository = {
+    id: repositoryData.id,
+    username: "fe-jcorreia",
+    creationDate: "2022-07-29",
+    lastUpdateDate: "2022-08-22",
+    title: repositoryData.name,
+    description: "App de prática dos conhecimentos em NodeJS",
+    stars: 15,
+    hasLiked: false,
+  };
+
+  const postsResponse = await api.get(`/post/folder/${repositoryId}`);
+  const postsData = postsResponse.data;
+  const postsRes = postsData.map(
+    (post: {
+      id: string;
+      name: string;
+      markdown: string;
+      likes: number;
+      tags: { category: string };
+      folderId: string;
+      userId: string;
+    }) => {
+      return {
+        id: post.id,
+        username: "fe-jcorreia",
+        creationDate: "2022-07-29",
+        lastUpdateDate: "2022-08-17",
+        repositoryTitle: "Primeira Pasta",
+        repositoryId: post.folderId,
+        title: post.name,
+        subtitle: "Tutorial prático da implementação de um Vector em C",
+        text: post.markdown,
+        image: "https://picsum.photos/500/400",
+        stars: post.likes,
+        hasLiked: false,
+      };
+    }
+  );
 
   return {
     props: {
       repositoryPage: response,
+      posts: postsRes,
     },
   };
-};
-
-const MOCK_DATA = {
-  id: "1",
-  username: "fe-jcorreia",
-  creationDate: "2022-07-29",
-  lastUpdateDate: "2022-08-22",
-  repositoryTitle: "myApp",
-  repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-  stars: 15,
-  hasLiked: false,
-  posts: [
-    {
-      id: "1232-9502-8523",
-      username: "tamy_takara",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-17",
-      repositoryTitle: "sistemas-operacionais",
-      title: "Lorem Ipsum",
-      subtitle: "Lorem Ipsum origin and uses.",
-      text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image: "https://picsum.photos/500/400",
-      stars: 98,
-      hasLiked: false,
-    },
-    {
-      id: "1232-9502-8512",
-      username: "tamy_takara",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-17",
-      repositoryTitle: "sistemas-operacionais",
-      title: "Lorem Lorem",
-      subtitle: "Lorem Ipsum origin and uses.",
-      text: "ting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image: "https://picsum.photos/500/400",
-      stars: 98,
-      hasLiked: false,
-    },
-  ],
 };

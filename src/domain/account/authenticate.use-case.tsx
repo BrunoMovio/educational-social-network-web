@@ -7,7 +7,7 @@ import Router from "next/router";
 import jwtDecode from "jwt-decode";
 
 interface UseAuthenticate {
-  user?: User;
+  user: User;
   logged: boolean;
   loading: boolean;
   login: (params: AccountLoginForm) => void;
@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, signUp, logout, loading, logged, user }}
+      value={{ login, signUp, logout, loading, logged, user: user as User }}
     >
       {children}
     </AuthContext.Provider>

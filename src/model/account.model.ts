@@ -16,15 +16,19 @@ enum RoleType {
   Admin = "ADMIN",
 }
 
+export type Location = {
+  city: string;
+  state: string;
+  country: string;
+};
+
 export type User = {
   id: string;
   name: string;
   nickname: string;
   email: string;
   role: RoleType;
-  city: string;
-  state: string;
-  country: string;
+  location: Location;
   description: string;
   career: string;
 };

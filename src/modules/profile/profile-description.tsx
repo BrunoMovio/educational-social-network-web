@@ -13,14 +13,14 @@ import { HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { EditProfileFormData, UserData } from "@src/model";
+import { EditProfileForm, User } from "@src/model";
 import { useAuthenticate, useUpdateUser } from "@src/domain/account";
 import { AppStrings } from "@src/strings";
 import { Input } from "@src/components";
 import { ProfileDescriptionStatic } from "./profile-description-static";
 
 interface ProfileDescriptionProps {
-  userData: UserData;
+  userData: User;
 }
 
 const profileStrings = AppStrings.Profile;
@@ -42,14 +42,14 @@ export const ProfileDescription = (props: ProfileDescriptionProps) => {
   const { updateUser } = useUpdateUser();
 
   const [onEdit, setOnEdit] = React.useState(false);
-  const [profile, setProfile] = React.useState<UserData>(props.userData);
+  const [profile, setProfile] = React.useState<User>(props.userData);
 
-  const { register, handleSubmit, formState } = useForm<EditProfileFormData>({
+  const { register, handleSubmit, formState } = useForm<EditProfileForm>({
     resolver: yupResolver(profileEditSchema),
   });
   const errors = formState.errors;
 
-  const handleEditUserData: SubmitHandler<EditProfileFormData> = async (
+  const handleEditUserData: SubmitHandler<EditProfileForm> = async (
     credentials
   ) => {
     const response = await updateUser({ id: user?.id, ...credentials });

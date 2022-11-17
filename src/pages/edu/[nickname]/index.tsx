@@ -9,23 +9,32 @@ import {
   HStack,
   Icon,
   Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { Header, RepositoryCard } from "@src/components";
 
-import { RepositoriesData, UserData } from "@src/model";
+import { Repository, User } from "@src/model";
 import { AppStrings } from "@src/strings";
 import { useAuthenticate } from "@src/domain/account";
 import Router from "next/router";
 import { api } from "@src/services";
 import { ProfileDescription } from "@src/modules/profile";
 import { FiBookmark } from "react-icons/fi";
+import { CreateRepositoryComponent } from "@src/modules/repository";
 
 interface ProfileProps {
-  userData: UserData;
-  repositoryData: RepositoriesData;
+  userData: User;
+  repositoryData: Repository[];
 }
 
 interface ServerSideProfileParams extends ParsedUrlQuery {
@@ -35,10 +44,14 @@ interface ServerSideProfileParams extends ParsedUrlQuery {
 const strings = AppStrings.Profile;
 
 export default function Profile({ userData, repositoryData }: ProfileProps) {
+  const [repositories, setRepositories] =
+    React.useState<Repository[]>(repositoryData);
   const { nickname } = userData;
-  const { repositories } = repositoryData;
 
   const { logged, loading } = useAuthenticate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = React.useRef(null);
 
   React.useEffect(() => {
     if (!loading && !logged) {
@@ -72,7 +85,7 @@ export default function Profile({ userData, repositoryData }: ProfileProps) {
                 colorScheme="green"
                 size="xs"
                 justifyContent="flex-end"
-                onClick={() => {}}
+                onClick={onOpen}
               >
                 Criar
               </Button>
@@ -90,6 +103,24 @@ export default function Profile({ userData, repositoryData }: ProfileProps) {
           </VStack>
         </GridItem>
       </Grid>
+
+      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color="blue.900" fontSize="2xl">
+            Criar novo repositório
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <CreateRepositoryComponent
+              onSetRepositories={setRepositories}
+              onCreationCompleted={onClose}
+            />
+          </ModalBody>
+
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
     </>
   );
 }
@@ -97,14 +128,16 @@ export default function Profile({ userData, repositoryData }: ProfileProps) {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { nickname } = params as ServerSideProfileParams;
 
-  const response = await api.get(`/user/nickname/${nickname}`);
-  const user = response.data;
+  const userResponse = await api.get(`/user/nickname/${nickname}`);
+  const user = userResponse.data;
 
   const userData = {
+    id: user.id,
     name: user.name,
     description: user.description,
     email: user.email,
     career: user.career,
+    role: user.role,
     nickname: user.nickname,
     location: {
       city: user.city,
@@ -113,77 +146,28 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
   };
 
-  const res = MOCK_DATA;
+  const repositoryResponse = await api.get(`/folder/user/${user.id}`);
+  console.log(repositoryResponse.data);
+
+  const TODO_repository = repositoryResponse?.data?.map(
+    (repository: { id: string; name: string }) => {
+      return {
+        id: repository.id,
+        username: "fe-jcorreia",
+        creationDate: "2022-07-29",
+        lastUpdateDate: "2022-08-22",
+        title: repository.name,
+        description: "App de prática dos conhecimentos em NodeJS",
+        stars: 15,
+        hasLiked: false,
+      };
+    }
+  );
 
   return {
     props: {
       userData,
-      repositoryData: res,
+      repositoryData: TODO_repository,
     },
   };
-};
-
-const MOCK_DATA = {
-  repositories: [
-    {
-      id: "1",
-      username: "fe-jcorreia2",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      repositoryTitle: "myApp",
-      repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
-    },
-    {
-      id: "2",
-      username: "fe-jcorreia2",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      repositoryTitle: "myApp",
-      repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
-    },
-    {
-      id: "3",
-      username: "fe-jcorreia2",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      repositoryTitle: "myApp",
-      repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
-    },
-    {
-      id: "4",
-      username: "fe-jcorreia2",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      repositoryTitle: "myApp",
-      repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
-    },
-    {
-      id: "5",
-      username: "fe-jcorreia2",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      repositoryTitle: "myApp",
-      repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
-    },
-    {
-      id: "6",
-      username: "fe-jcorreia2",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      repositoryTitle: "myApp",
-      repositoryDescription: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
-    },
-  ],
 };

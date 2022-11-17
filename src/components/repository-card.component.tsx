@@ -3,28 +3,21 @@ import { Box, Flex, Heading, HStack, Icon, Link, Text } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
+import { Repository } from "@src/model";
 
 interface RepositoryCardProps {
-  repositoryCard: {
-    stars: number;
-    hasLiked: boolean;
-    lastUpdateDate: string;
-    repositoryTitle: string;
-    repositoryDescription: string;
-  };
+  repositoryCard: Repository;
   username: string;
 }
 
 const strings = AppStrings.Home.repositoryCards;
 
-export const RepositoryCard = ({ repositoryCard, username }: RepositoryCardProps) => {
-  const {
-    stars,
-    hasLiked,
-    lastUpdateDate,
-    repositoryTitle,
-    repositoryDescription,
-  } = repositoryCard;
+export const RepositoryCard = ({
+  repositoryCard,
+  username,
+}: RepositoryCardProps) => {
+  const { id, stars, hasLiked, lastUpdateDate, title, description } =
+    repositoryCard;
 
   const [liked, setLiked] = React.useState(hasLiked);
 
@@ -41,12 +34,12 @@ export const RepositoryCard = ({ repositoryCard, username }: RepositoryCardProps
       borderRadius="10px"
       w="100%"
     >
-      <Link href={`/edu/${username}/${repositoryTitle}`}>
+      <Link href={`/edu/${username}/${id}`}>
         <Heading mb="0.25rem" fontSize="lg">
-          {repositoryTitle}
+          {title}
         </Heading>
         <Text fontSize="sm" mb="0.5rem">
-          {repositoryDescription}
+          {description}
         </Text>
       </Link>
 

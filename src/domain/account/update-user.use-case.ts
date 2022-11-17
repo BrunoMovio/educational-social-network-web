@@ -1,12 +1,12 @@
-import { Location, UserData } from "@src/model";
+import { Location, User } from "@src/model";
 import { nextApi } from "@src/services";
 
 interface UseAuthenticate {
-  updateUser: (data: UpdateUserData) => Promise<UserData>;
+  updateUser: (data: UpdateUserData) => Promise<User>;
 }
 
 interface UpdateUserData {
-  id?: string;
+  id: string;
   name: string;
   location: Location;
   description: string;
@@ -18,7 +18,7 @@ export const useUpdateUser = (): UseAuthenticate => {
     name,
     location,
     description,
-  }: UpdateUserData): Promise<UserData> => {
+  }: UpdateUserData): Promise<User> => {
     const { data } = await nextApi.post("/user/update", {
       input: {
         id,
@@ -31,6 +31,7 @@ export const useUpdateUser = (): UseAuthenticate => {
     });
 
     return {
+      id: data.id,
       nickname: data.nickname,
       name: data.name,
       description: data.description,
@@ -41,6 +42,7 @@ export const useUpdateUser = (): UseAuthenticate => {
         state: data.state,
         country: data.country,
       },
+      role: data.role,
     };
   };
 

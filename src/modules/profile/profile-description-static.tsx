@@ -11,12 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { BiBuildings, BiEditAlt } from "react-icons/bi";
 import { HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
-import { UserData } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";
-import { FiBookmark } from "react-icons/fi";
+import { User } from "@src/model";
 
 interface ProfileDescriptionStaticProps {
-  userData: UserData;
+  userData: User;
   edit: boolean;
   onEdit: (state: boolean) => void;
 }
