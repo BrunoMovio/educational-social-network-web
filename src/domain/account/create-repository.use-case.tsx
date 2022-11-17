@@ -24,7 +24,7 @@ export const useCreateRepository = (): UseCreateRepository => {
 
     return {
       id: data.id,
-      username: "fe-jcorreia",
+      repositoryNickname: "fe-jcorreia",
       creationDate: "2022-07-29",
       lastUpdateDate: "2022-08-22",
       title: data.name,

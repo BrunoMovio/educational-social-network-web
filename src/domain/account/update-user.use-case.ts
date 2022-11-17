@@ -1,7 +1,7 @@
 import { Location, User } from "@src/model";
 import { nextApi } from "@src/services";
 
-interface UseAuthenticate {
+interface UseUpdateUser {
   updateUser: (data: UpdateUserData) => Promise<User>;
 }
 
@@ -12,7 +12,7 @@ interface UpdateUserData {
   description: string;
 }
 
-export const useUpdateUser = (): UseAuthenticate => {
+export const useUpdateUser = (): UseUpdateUser => {
   const updateUser = async ({
     id,
     name,

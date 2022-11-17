@@ -2,7 +2,7 @@ export type Repository = {
   id: string;
   title: string;
   description: string;
-  username: string;
+  repositoryNickname: string;
   creationDate: string;
   lastUpdateDate: string;
   stars: number;

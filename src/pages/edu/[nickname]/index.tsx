@@ -1,57 +1,25 @@
 import React from "react";
-import {
-  Button,
-  Divider,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Icon,
-  Image,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Image } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { Header, RepositoryCard } from "@src/components";
-
+import { Header } from "@src/components";
 import { Repository, User } from "@src/model";
-import { AppStrings } from "@src/strings";
 import { useAuthenticate } from "@src/domain/account";
 import Router from "next/router";
 import { api } from "@src/services";
-import { ProfileDescription } from "@src/modules/profile";
-import { FiBookmark } from "react-icons/fi";
-import { CreateRepositoryComponent } from "@src/modules/repository";
+import { ProfileDescription, RepositoryList } from "@src/modules/profile";
 
 interface ProfileProps {
-  userData: User;
-  repositoryData: Repository[];
+  user: User;
+  repositories: Repository[];
 }
 
 interface ServerSideProfileParams extends ParsedUrlQuery {
   nickname: string;
 }
 
-const strings = AppStrings.Profile;
-
-export default function Profile({ userData, repositoryData }: ProfileProps) {
-  const [repositories, setRepositories] =
-    React.useState<Repository[]>(repositoryData);
-  const { nickname } = userData;
-
+export default function Profile({ user, repositories }: ProfileProps) {
   const { logged, loading } = useAuthenticate();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const finalRef = React.useRef(null);
 
   React.useEffect(() => {
     if (!loading && !logged) {
@@ -73,54 +41,13 @@ export default function Profile({ userData, repositoryData }: ProfileProps) {
 
       <Grid templateColumns="repeat(5, 1fr)" mx="1rem" pt="1rem">
         <GridItem colStart={1} colEnd={3}>
-          <ProfileDescription userData={userData} />
+          <ProfileDescription userData={user} />
         </GridItem>
 
         <GridItem colStart={3} colEnd={6}>
-          <VStack spacing={6} py="3rem" px="3rem" w="100%" align="start">
-            <HStack spacing={4} mb="2rem">
-              <Heading size="md">{strings.myRepositories}</Heading>
-              <Button
-                leftIcon={<Icon as={FiBookmark} />}
-                colorScheme="green"
-                size="xs"
-                justifyContent="flex-end"
-                onClick={onOpen}
-              >
-                Criar
-              </Button>
-            </HStack>
-            {repositories?.map((repository) => (
-              <>
-                <RepositoryCard
-                  key={repository.id}
-                  repositoryCard={repository}
-                  username={nickname}
-                />
-                <Divider />
-              </>
-            ))}
-          </VStack>
+          <RepositoryList user={user} repositoryList={repositories} />
         </GridItem>
       </Grid>
-
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="blue.900" fontSize="2xl">
-            Criar novo repositório
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <CreateRepositoryComponent
-              onSetRepositories={setRepositories}
-              onCreationCompleted={onClose}
-            />
-          </ModalBody>
-
-          <ModalFooter />
-        </ModalContent>
-      </Modal>
     </>
   );
 }
@@ -129,27 +56,27 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { nickname } = params as ServerSideProfileParams;
 
   const userResponse = await api.get(`/user/nickname/${nickname}`);
-  const user = userResponse.data;
+  const userData = userResponse.data;
 
-  const userData = {
-    id: user.id,
-    name: user.name,
-    description: user.description,
-    email: user.email,
-    career: user.career,
-    role: user.role,
-    nickname: user.nickname,
+  const user = {
+    id: userData.id,
+    name: userData.name,
+    description: userData.description,
+    email: userData.email,
+    career: userData.career,
+    role: userData.role,
+    nickname: userData.nickname,
     location: {
-      city: user.city,
-      state: user.state,
-      country: user.country,
+      city: userData.city,
+      state: userData.state,
+      country: userData.country,
     },
   };
 
   const repositoryResponse = await api.get(`/folder/user/${user.id}`);
   console.log(repositoryResponse.data);
 
-  const TODO_repository = repositoryResponse?.data?.map(
+  const repositories = repositoryResponse.data.map(
     (repository: { id: string; name: string }) => {
       return {
         id: repository.id,
@@ -166,8 +93,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   return {
     props: {
-      userData,
-      repositoryData: TODO_repository,
+      user,
+      repositories,
     },
   };
 };

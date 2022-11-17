@@ -15,18 +15,17 @@ import { useAuthenticate } from "@src/domain/account";
 import { User } from "@src/model";
 
 interface ProfileDescriptionStaticProps {
-  userData: User;
-  edit: boolean;
+  profile: User;
   onEdit: (state: boolean) => void;
 }
 
-export const ProfileDescriptionStatic = (
-  props: ProfileDescriptionStaticProps
-) => {
-  const { onEdit } = props;
+export const ProfileDescriptionStatic = ({
+  profile,
+  onEdit,
+}: ProfileDescriptionStaticProps) => {
   const { user } = useAuthenticate();
-  const { name, description, career, email, location, nickname } =
-    props.userData;
+  const { name, description, career, email, location, nickname } = profile;
+
   return (
     <VStack py="3rem" px="4rem" w="100%" spacing={4} alignItems="left">
       <Avatar size="2xl" mb="1rem" name={name} alignSelf="center" />
@@ -51,9 +50,9 @@ export const ProfileDescriptionStatic = (
           <Text justifyContent="center">{email}</Text>
         </Flex>
       </VStack>
+
       {user?.nickname === nickname && (
         <Button
-          w="25%"
           variant="outline"
           onClick={() => onEdit(true)}
           colorScheme="teal"

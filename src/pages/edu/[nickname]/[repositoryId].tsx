@@ -33,14 +33,17 @@ import { FaStar } from "react-icons/fa";
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
 import { api } from "@src/services";
+import { BiEditAlt } from "react-icons/bi";
 
 interface RepositoryProps {
   repositoryPage: Repository;
   posts: Post[];
+  nickname: string;
 }
 
 interface ServerSideRepositoryParams extends ParsedUrlQuery {
   repository: string;
+  nickname: string;
 }
 
 const strings = AppStrings.Home.repositoryCards;
@@ -48,10 +51,12 @@ const strings = AppStrings.Home.repositoryCards;
 export default function RepositoryPage({
   repositoryPage,
   posts,
+  nickname,
 }: RepositoryProps) {
-  const { lastUpdateDate, stars, hasLiked } = repositoryPage;
+  const { repositoryNickname, title, description, lastUpdateDate, stars, hasLiked } =
+    repositoryPage;
 
-  const { logged, loading } = useAuthenticate();
+  const { user, logged, loading } = useAuthenticate();
   const [liked, setLiked] = React.useState(hasLiked);
   const [showPost, setShowPost] = React.useState<Post>();
 
@@ -107,10 +112,14 @@ export default function RepositoryPage({
               <HStack spacing={2}>
                 <Icon as={FiBook} />
                 <Heading size="md" mb="2rem">
-                  fe-jcorreia / myApp
+                  {repositoryNickname} / {title}
                 </Heading>
                 <Text fontSize="xs">Criado há 4 meses</Text>
               </HStack>
+
+              <Text size="lg" fontWeight={500}>
+                {description}
+              </Text>
 
               <HStack spacing="2rem">
                 <Link onClick={handleUpdateRepositoryStars}>
@@ -133,6 +142,17 @@ export default function RepositoryPage({
                   </Text>
                 )}
               </HStack>
+
+              {user?.nickname === nickname && (
+                <Button
+                  w="25%"
+                  variant="outline"
+                  onClick={() => {}}
+                  colorScheme="teal"
+                >
+                  <Icon mr="0.5rem" as={BiEditAlt} /> Editar
+                </Button>
+              )}
             </VStack>
 
             <VStack spacing={4} align="start">
@@ -198,14 +218,15 @@ export default function RepositoryPage({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { repositoryId } = params as ServerSideRepositoryParams;
+  const { repositoryId, nickname } = params as ServerSideRepositoryParams;
+  console.log(nickname);
 
   const repositoryResponse = await api.get(`/folder/${repositoryId}`);
   const repositoryData = repositoryResponse.data;
 
   const response: Repository = {
     id: repositoryData.id,
-    username: "fe-jcorreia",
+    repositoryNickname: "fe-jcorreia",
     creationDate: "2022-07-29",
     lastUpdateDate: "2022-08-22",
     title: repositoryData.name,
@@ -228,7 +249,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }) => {
       return {
         id: post.id,
-        username: "fe-jcorreia",
+        repositoryNickname: "fe-jcorreia",
         creationDate: "2022-07-29",
         lastUpdateDate: "2022-08-17",
         repositoryTitle: "Primeira Pasta",
@@ -247,6 +268,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: {
       repositoryPage: response,
       posts: postsRes,
+      nickname,
     },
   };
 };
