@@ -1,9 +1,9 @@
 import { Avatar, Box, Divider, Flex, Link, Text } from "@chakra-ui/react";
 import React from "react";
-import { PostPage } from "@src/components";
 import { HomePostCardData } from "@src/model";
 import { AppStrings } from "@src/strings";
 import { getPastTime } from "@src/utils";
+import { PostPage } from "../post";
 
 interface PostComponentProps {
   mainHomePosts: HomePostCardData;
