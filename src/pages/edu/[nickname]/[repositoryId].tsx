@@ -10,6 +10,7 @@ import { Header } from "@src/components";
 import { useAuthenticate } from "@src/domain/account";
 import { RepositoryDescriptionStatic } from "@src/modules/repository";
 import { PostList, PostView } from "@src/modules/post";
+import { RepositoryDescriptionEdit } from "@src/modules/repository/repository-description-edit";
 
 interface RepositoryProps {
   repository: Repository;
@@ -20,9 +21,16 @@ interface ServerSideRepositoryParams extends ParsedUrlQuery {
   repository: string;
 }
 
-export default function RepositoryPage({ repository, posts }: RepositoryProps) {
+export default function RepositoryPage({
+  repository: repositoryProps,
+  posts,
+}: RepositoryProps) {
   const { logged, loading } = useAuthenticate();
   const [showPost, setShowPost] = React.useState<Post>();
+
+  const [repository, setRepository] =
+    React.useState<Repository>(repositoryProps);
+  const [editRepository, setEditRepository] = React.useState(false);
 
   React.useEffect(() => {
     if (!loading && !logged) {
@@ -50,7 +58,19 @@ export default function RepositoryPage({ repository, posts }: RepositoryProps) {
       >
         <GridItem colStart={1} colEnd={3}>
           <VStack spacing="5rem" align="start">
-            <RepositoryDescriptionStatic repository={repository} />
+            {!editRepository ? (
+              <RepositoryDescriptionStatic
+                onSetEditRepository={setEditRepository}
+                repository={repository}
+              />
+            ) : (
+              <RepositoryDescriptionEdit
+                repository={repository}
+                nickname={repository.repositoryNickname}
+                onSetRepository={setRepository}
+                onSetEditRepository={setEditRepository}
+              />
+            )}
 
             <PostList posts={posts} onSetShowPost={setShowPost} />
           </VStack>

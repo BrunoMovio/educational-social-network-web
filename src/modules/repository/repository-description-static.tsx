@@ -17,12 +17,14 @@ import { Repository } from "@src/model";
 
 interface RepositoryDescriptionStaticProps {
   repository: Repository;
+  onSetEditRepository: (data: boolean) => void;
 }
 
 const strings = AppStrings.Home.repositoryCards;
 
 export const RepositoryDescriptionStatic = ({
   repository,
+  onSetEditRepository,
 }: RepositoryDescriptionStaticProps) => {
   const {
     repositoryNickname,
@@ -69,7 +71,11 @@ export const RepositoryDescriptionStatic = ({
         </HStack>
 
         {user?.nickname === repositoryNickname && (
-          <Button variant="outline" onClick={() => {}} colorScheme="teal">
+          <Button
+            variant="outline"
+            onClick={() => onSetEditRepository(true)}
+            colorScheme="teal"
+          >
             <Icon mr="0.5rem" as={BiEditAlt} /> Editar
           </Button>
         )}

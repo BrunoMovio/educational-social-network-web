@@ -35,3 +35,8 @@ export type CreateRepositoryForm = {
   title: string;
   description: string;
 };
+
+export type EditRepositoryForm = {
+  title: string;
+  description: string;
+};
