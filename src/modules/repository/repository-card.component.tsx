@@ -1,39 +1,22 @@
 import React from "react";
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  Link,
-  Text,
-} from "@chakra-ui/react";
-import { FaStar } from "react-icons/fa";
+import { Box, Divider, Heading, HStack, Link, Text } from "@chakra-ui/react";
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
 import { Repository } from "@src/model";
 
 interface RepositoryCardProps {
   repositoryCard: Repository;
-  username: string;
+  nickname: string;
 }
 
 const strings = AppStrings.Home.repositoryCards;
 
 export const RepositoryCard = ({
   repositoryCard,
-  username,
+  nickname,
 }: RepositoryCardProps) => {
-  const { id, stars, hasLiked, lastUpdateDate, title, description } =
+  const { id, creationDate, lastUpdateDate, title, description } =
     repositoryCard;
-
-  const [liked, setLiked] = React.useState(hasLiked);
-
-  const handleUpdateRepositoryStars = () => {
-    console.log("update star");
-    setLiked((prevState) => !prevState);
-  };
 
   return (
     <>
@@ -44,7 +27,7 @@ export const RepositoryCard = ({
         borderRadius="10px"
         w="100%"
       >
-        <Link href={`/edu/${username}/${id}`}>
+        <Link href={`/edu/${nickname}/${id}`}>
           <Heading mb="0.25rem" fontSize="lg">
             {title}
           </Heading>
@@ -54,17 +37,13 @@ export const RepositoryCard = ({
         </Link>
 
         <HStack spacing="2rem">
-          <Link onClick={handleUpdateRepositoryStars}>
-            <Flex>
-              <Icon
-                size="xs"
-                as={FaStar}
-                color={liked ? "orange" : ""}
-                mr="0.2rem"
-              />{" "}
-              <Text fontSize="xs">{stars}</Text>
-            </Flex>
-          </Link>
+          {creationDate && (
+            <Text fontSize="xs">
+              {replaceTemplateString(strings.createdAt, {
+                date: getLowerCasePastTime(new Date(creationDate)),
+              })}
+            </Text>
+          )}
 
           {lastUpdateDate && (
             <Text fontSize="xs">

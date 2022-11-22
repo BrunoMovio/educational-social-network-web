@@ -2,35 +2,38 @@ import { Repository } from "@src/model";
 import { nextApi } from "@src/services";
 
 interface UseCreateRepository {
-  createRepository: (data: CreateRepositoryData) => Promise<Repository>;
+  createRepository: (
+    data: CreateRepositoryUseCaseParams
+  ) => Promise<Repository>;
 }
 
-interface CreateRepositoryData {
+interface CreateRepositoryUseCaseParams {
   userId: string;
   title: string;
+  description: string;
 }
 
 export const useCreateRepository = (): UseCreateRepository => {
   const createRepository = async ({
     userId,
     title,
-  }: CreateRepositoryData): Promise<Repository> => {
+    description,
+  }: CreateRepositoryUseCaseParams): Promise<Repository> => {
     const { data } = await nextApi.post("/repository/create", {
       input: {
         userId,
-        name: title,
+        title,
+        description,
       },
     });
 
     return {
       id: data.id,
-      repositoryNickname: "fe-jcorreia",
-      creationDate: "2022-07-29",
-      lastUpdateDate: "2022-08-22",
-      title: data.name,
-      description: "App de prática dos conhecimentos em NodeJS",
-      stars: 15,
-      hasLiked: false,
+      title: data.title,
+      description: data.description,
+      repositoryNickname: data.nickname,
+      creationDate: data.creationDate,
+      lastUpdateDate: data.lastUpdateDate,
     };
   };
 

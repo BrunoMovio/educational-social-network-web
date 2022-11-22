@@ -5,6 +5,7 @@ export const AppStrings = {
     repositoryCards: {
       sharedRepository: " compartilhou um ",
       post: "post",
+      createdAt: "Criado {{date}}",
       updatedAt: "Atualizado {{date}}",
     },
     postsRecommendations: {

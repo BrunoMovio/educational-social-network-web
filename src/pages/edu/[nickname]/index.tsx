@@ -3,7 +3,7 @@ import { Flex, Grid, GridItem, Image } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { Header } from "@src/components";
-import { Repository, User } from "@src/model";
+import { Repository, RepositoryDatasource, User } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";
 import Router from "next/router";
 import { api } from "@src/services";
@@ -74,19 +74,16 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 
   const repositoryResponse = await api.get(`/folder/user/${user.id}`);
-  console.log(repositoryResponse.data);
 
   const repositories = repositoryResponse.data.map(
-    (repository: { id: string; name: string }) => {
+    (repository: RepositoryDatasource) => {
       return {
         id: repository.id,
-        username: "fe-jcorreia",
-        creationDate: "2022-07-29",
-        lastUpdateDate: "2022-08-22",
-        title: repository.name,
-        description: "App de prática dos conhecimentos em NodeJS",
-        stars: 15,
-        hasLiked: false,
+        title: repository.title,
+        description: repository.description,
+        repositoryNickname: repository.nickname,
+        creationDate: repository.creationDate,
+        lastUpdateDate: repository.lastUpdateDate,
       };
     }
   );

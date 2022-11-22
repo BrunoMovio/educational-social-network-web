@@ -37,6 +37,7 @@ export function CreateRepositoryComponent({
     const newRepository = await createRepository({
       userId: user.id,
       title: credentials.title,
+      description: credentials.description,
     });
 
     onSetRepositories((prev) => [...prev, newRepository]);

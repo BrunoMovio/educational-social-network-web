@@ -24,12 +24,11 @@ import {
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 
-import { Post, Repository } from "@src/model";
+import { Post, Repository, RepositoryDatasource } from "@src/model";
 import { Header, PostPage } from "@src/components";
 import Router from "next/router";
 import { useAuthenticate } from "@src/domain/account";
 import { FiBook, FiBookmark, FiFile } from "react-icons/fi";
-import { FaStar } from "react-icons/fa";
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
 import { api } from "@src/services";
@@ -53,17 +52,16 @@ export default function RepositoryPage({
   posts,
   nickname,
 }: RepositoryProps) {
-  const { repositoryNickname, title, description, lastUpdateDate, stars, hasLiked } =
-    repositoryPage;
+  const {
+    repositoryNickname,
+    title,
+    description,
+    creationDate,
+    lastUpdateDate,
+  } = repositoryPage;
 
   const { user, logged, loading } = useAuthenticate();
-  const [liked, setLiked] = React.useState(hasLiked);
   const [showPost, setShowPost] = React.useState<Post>();
-
-  const handleUpdateRepositoryStars = () => {
-    console.log("update star");
-    setLiked((prevState) => !prevState);
-  };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
@@ -110,11 +108,11 @@ export default function RepositoryPage({
           <VStack spacing="5rem" align="start">
             <VStack spacing={4} align="start">
               <HStack spacing={2}>
-                <Icon as={FiBook} />
-                <Heading size="md" mb="2rem">
-                  {repositoryNickname} / {title}
+                <Heading size="md">
+                  <Icon as={FiBook} />{" "}
+                  <Link href={`/edu/${nickname}`}>{repositoryNickname}</Link> /{" "}
+                  {title}
                 </Heading>
-                <Text fontSize="xs">Criado há 4 meses</Text>
               </HStack>
 
               <Text size="lg" fontWeight={500}>
@@ -122,17 +120,13 @@ export default function RepositoryPage({
               </Text>
 
               <HStack spacing="2rem">
-                <Link onClick={handleUpdateRepositoryStars}>
-                  <Flex>
-                    <Icon
-                      size="xs"
-                      as={FaStar}
-                      color={liked ? "orange" : ""}
-                      mr="0.2rem"
-                    />{" "}
-                    <Text fontSize="sm">{stars}</Text>
-                  </Flex>
-                </Link>
+                {creationDate && (
+                  <Text fontSize="xs">
+                    {replaceTemplateString(strings.createdAt, {
+                      date: getLowerCasePastTime(new Date(creationDate)),
+                    })}
+                  </Text>
+                )}
 
                 {lastUpdateDate && (
                   <Text fontSize="xs">
@@ -144,12 +138,7 @@ export default function RepositoryPage({
               </HStack>
 
               {user?.nickname === nickname && (
-                <Button
-                  w="25%"
-                  variant="outline"
-                  onClick={() => {}}
-                  colorScheme="teal"
-                >
+                <Button variant="outline" onClick={() => {}} colorScheme="teal">
                   <Icon mr="0.5rem" as={BiEditAlt} /> Editar
                 </Button>
               )}
@@ -219,20 +208,17 @@ export default function RepositoryPage({
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const { repositoryId, nickname } = params as ServerSideRepositoryParams;
-  console.log(nickname);
 
   const repositoryResponse = await api.get(`/folder/${repositoryId}`);
-  const repositoryData = repositoryResponse.data;
+  const repositoryData: RepositoryDatasource = repositoryResponse.data;
 
   const response: Repository = {
     id: repositoryData.id,
-    repositoryNickname: "fe-jcorreia",
-    creationDate: "2022-07-29",
-    lastUpdateDate: "2022-08-22",
-    title: repositoryData.name,
-    description: "App de prática dos conhecimentos em NodeJS",
-    stars: 15,
-    hasLiked: false,
+    title: repositoryData.title,
+    description: repositoryData.description,
+    repositoryNickname: repositoryData.nickname,
+    creationDate: repositoryData.creationDate,
+    lastUpdateDate: repositoryData.lastUpdateDate,
   };
 
   const postsResponse = await api.get(`/post/folder/${repositoryId}`);
