@@ -18,15 +18,23 @@ import {
 import { Post } from "@src/model";
 import React from "react";
 import { FiBookmark } from "react-icons/fi";
+import { CreatePostComponent } from "./create-post.component";
 
 interface PostListProps {
   posts: Post[];
   onSetShowPost: (data: Post) => void;
+  repositoryId: string;
 }
 
-export const PostList = ({ posts, onSetShowPost }: PostListProps) => {
+export const PostList = ({
+  posts: postsProps,
+  onSetShowPost,
+  repositoryId,
+}: PostListProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
+
+  const [posts, setPosts] = React.useState<Post[]>(postsProps);
 
   const PostTopic = ({ post }: { post: Post }) => {
     return (
@@ -64,14 +72,25 @@ export const PostList = ({ posts, onSetShowPost }: PostListProps) => {
         ))}
       </VStack>
 
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size="4xl"
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="blue.900" fontSize="3xl">
             Criar novo post
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>test</ModalBody>
+          <ModalBody>
+            <CreatePostComponent
+              onSetPost={setPosts}
+              onCreationCompleted={onClose}
+              repositoryId={repositoryId}
+            />
+          </ModalBody>
 
           <ModalFooter />
         </ModalContent>

@@ -5,7 +5,12 @@ import Router from "next/router";
 import { ParsedUrlQuery } from "querystring";
 
 import { api } from "@src/services";
-import { Post, Repository, RepositoryDatasource } from "@src/model";
+import {
+  Post,
+  PostDatasource,
+  Repository,
+  RepositoryDatasource,
+} from "@src/model";
 import { Header } from "@src/components";
 import { useAuthenticate } from "@src/domain/account";
 import { RepositoryDescriptionStatic } from "@src/modules/repository";
@@ -72,7 +77,11 @@ export default function RepositoryPage({
               />
             )}
 
-            <PostList posts={posts} onSetShowPost={setShowPost} />
+            <PostList
+              posts={posts}
+              repositoryId={repository.id}
+              onSetShowPost={setShowPost}
+            />
           </VStack>
         </GridItem>
 
@@ -89,8 +98,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const repositoryResponse = await api.get(`/folder/${repositoryId}`);
   const repositoryData: RepositoryDatasource = repositoryResponse.data;
-
-  const response: Repository = {
+  const repository: Repository = {
     id: repositoryData.id,
     title: repositoryData.title,
     description: repositoryData.description,
@@ -101,37 +109,27 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const postsResponse = await api.get(`/post/folder/${repositoryId}`);
   const postsData = postsResponse.data;
-  const postsRes = postsData.map(
-    (post: {
-      id: string;
-      name: string;
-      markdown: string;
-      likes: number;
-      tags: { category: string };
-      folderId: string;
-      userId: string;
-    }) => {
-      return {
-        id: post.id,
-        repositoryNickname: "fe-jcorreia",
-        creationDate: "2022-07-29",
-        lastUpdateDate: "2022-08-17",
-        repositoryTitle: "Primeira Pasta",
-        repositoryId: post.folderId,
-        title: post.name,
-        subtitle: "Tutorial prático da implementação de um Vector em C",
-        text: post.markdown,
-        image: "https://picsum.photos/500/400",
-        stars: post.likes,
-        hasLiked: false,
-      };
-    }
-  );
+  const posts = postsData.map((post: PostDatasource) => {
+    return {
+      id: post.id,
+      repositoryNickname: post.nickname,
+      creationDate: post.creationDate,
+      lastUpdateDate: post.lastUpdateDate,
+      repositoryTitle: post.repositoryTitle,
+      repositoryId: post.repositoryId,
+      title: post.title,
+      subtitle: post.subtitle,
+      text: post.text,
+      image: post.image,
+      stars: post.likes,
+      likeList: post.usersLiked,
+    };
+  });
 
   return {
     props: {
-      repository: response,
-      posts: postsRes,
+      repository,
+      posts,
     },
   };
 };

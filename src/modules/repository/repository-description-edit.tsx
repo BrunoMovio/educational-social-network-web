@@ -75,7 +75,7 @@ export const RepositoryDescriptionEdit = ({
       <VStack
         as="form"
         align="start"
-        w="100%"
+        w="90%"
         spacing={4}
         onSubmit={handleSubmit(handleEditRepositoryData)}
       >

@@ -10,6 +10,7 @@ import { FieldError } from "react-hook-form";
 
 interface InputProps {
   type?: string;
+  height?: string;
   label?: string;
   placeholder?: string;
   error?: FieldError;
@@ -21,7 +22,7 @@ const TextAreaBase: ForwardRefRenderFunction<
   HTMLTextAreaElement,
   InputProps
 > = (
-  { label, placeholder, error, value, variant = "outline", ...rest },
+  { label, placeholder, error, value, height, variant = "outline", ...rest },
   ref
 ) => {
   return (
@@ -33,6 +34,7 @@ const TextAreaBase: ForwardRefRenderFunction<
       )}
       <InputGroup>
         <ChakraTextArea
+          height={height}
           defaultValue={value}
           variant={variant}
           placeholder={placeholder}

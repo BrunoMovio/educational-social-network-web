@@ -1,4 +1,5 @@
 import { Heading, Icon, VStack } from "@chakra-ui/react";
+import { useAuthenticate } from "@src/domain/account";
 import { Post } from "@src/model";
 import React from "react";
 import { FiFile } from "react-icons/fi";
@@ -9,6 +10,8 @@ interface PostViewProps {
 }
 
 export const PostView = ({ showPost }: PostViewProps) => {
+  const { user } = useAuthenticate();
+
   return (
     <>
       {showPost ? (
@@ -16,7 +19,7 @@ export const PostView = ({ showPost }: PostViewProps) => {
           <PostPage
             postData={{
               stars: showPost.stars,
-              hasLiked: showPost.hasLiked,
+              hasLiked: showPost.likeList.includes(user.id),
               lastUpdateDate: showPost.lastUpdateDate,
               title: showPost.title,
               subtitle: showPost.subtitle,
