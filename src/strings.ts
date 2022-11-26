@@ -86,6 +86,38 @@ export const AppStrings = {
       country: "Seu país",
     },
   },
+
+  Repository: {
+    createdAt: "Criado {{date}}",
+    updatedAt: "Atualizado {{date}}",
+    description: {
+      editButton: "Editar",
+    },
+    create: {
+      requiredTitle: "Título obrigatório",
+      fields: {
+        title: "Título",
+        description: "Descrição",
+      },
+      createButton: "Criar",
+    },
+    edit: {
+      requiredTitle: "Título obrigatório",
+      fields: {
+        title: "Título",
+        description: "Descrição",
+      },
+      editButton: "Salvar",
+      deleteButton: "Deletar",
+      onDelete: {
+        deleteConfirmation: "Deseja mesmo deletar sua conta?",
+        confirmationWarning:
+          "Todos os seus repositórios, posts e contribuições para a comunidade serão deletados, tem certeza que deseja continuar?",
+        declineButton: "Não deletar",
+        deleteButton: "Deletar",
+      },
+    },
+  },
 };
 
 export function replaceTemplateString(

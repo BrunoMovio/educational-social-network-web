@@ -61,7 +61,7 @@ export const RepositoryList = ({
         {repositories?.map((repository) => (
           <RepositoryCard
             key={repository.id}
-            repositoryCard={repository}
+            repository={repository}
             nickname={nickname}
           />
         ))}

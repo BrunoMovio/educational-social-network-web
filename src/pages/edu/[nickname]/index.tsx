@@ -1,11 +1,12 @@
 import React from "react";
-import { Flex, Grid, GridItem, Image } from "@chakra-ui/react";
+import Router from "next/router";
 import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { Flex, Grid, GridItem, Image } from "@chakra-ui/react";
+
 import { Header } from "@src/components";
 import { Repository, RepositoryDatasource, User } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";
-import Router from "next/router";
 import { api } from "@src/services";
 import { ProfileDescription, RepositoryList } from "@src/modules/profile";
 
@@ -18,7 +19,7 @@ interface ServerSideProfileParams extends ParsedUrlQuery {
   nickname: string;
 }
 
-export default function Profile({ user, repositories }: ProfileProps) {
+export default function ProfilePage({ user, repositories }: ProfileProps) {
   const { logged, loading } = useAuthenticate();
 
   React.useEffect(() => {
@@ -74,8 +75,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 
   const repositoryResponse = await api.get(`/folder/user/${user.id}`);
+  const repositoryData = repositoryResponse.data;
 
-  const repositories = repositoryResponse.data.map(
+  const repositories = repositoryData.map(
     (repository: RepositoryDatasource) => {
       return {
         id: repository.id,

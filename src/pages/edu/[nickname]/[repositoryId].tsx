@@ -1,21 +1,23 @@
 import React from "react";
-import { Flex, Grid, GridItem, Image, VStack } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
 import Router from "next/router";
+import { GetServerSideProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { Flex, Grid, GridItem, Image, VStack } from "@chakra-ui/react";
 
 import { api } from "@src/services";
+import { Header } from "@src/components";
+import { useAuthenticate } from "@src/domain/account";
 import {
   Post,
   PostDatasource,
   Repository,
   RepositoryDatasource,
 } from "@src/model";
-import { Header } from "@src/components";
-import { useAuthenticate } from "@src/domain/account";
-import { RepositoryDescriptionStatic } from "@src/modules/repository";
+import {
+  RepositoryDescriptionEdit,
+  RepositoryDescriptionStatic,
+} from "@src/modules/repository";
 import { PostList, PostView } from "@src/modules/post";
-import { RepositoryDescriptionEdit } from "@src/modules/repository/repository-description-edit";
 
 interface RepositoryProps {
   repository: Repository;
@@ -31,7 +33,8 @@ export default function RepositoryPage({
   posts,
 }: RepositoryProps) {
   const { logged, loading } = useAuthenticate();
-  const [showPost, setShowPost] = React.useState<Post>();
+
+  const [post, setPost] = React.useState<Post>();
 
   const [repository, setRepository] =
     React.useState<Repository>(repositoryProps);
@@ -80,13 +83,13 @@ export default function RepositoryPage({
             <PostList
               posts={posts}
               repositoryId={repository.id}
-              onSetShowPost={setShowPost}
+              onSetShowPost={setPost}
             />
           </VStack>
         </GridItem>
 
         <GridItem colStart={3} colEnd={6}>
-          <PostView showPost={showPost} />
+          <PostView showPost={post} />
         </GridItem>
       </Grid>
     </>

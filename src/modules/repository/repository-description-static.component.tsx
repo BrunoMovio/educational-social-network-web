@@ -9,9 +9,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FiBook } from "react-icons/fi";
+import { BiEditAlt } from "react-icons/bi";
+
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
-import { BiEditAlt } from "react-icons/bi";
 import { useAuthenticate } from "@src/domain/account";
 import { Repository } from "@src/model";
 
@@ -20,7 +21,7 @@ interface RepositoryDescriptionStaticProps {
   onSetEditRepository: (data: boolean) => void;
 }
 
-const strings = AppStrings.Home.repositoryCards;
+const strings = AppStrings.Repository;
 
 export const RepositoryDescriptionStatic = ({
   repository,
@@ -33,6 +34,7 @@ export const RepositoryDescriptionStatic = ({
     creationDate,
     lastUpdateDate,
   } = repository;
+
   const { user } = useAuthenticate();
 
   return (
@@ -76,7 +78,7 @@ export const RepositoryDescriptionStatic = ({
             onClick={() => onSetEditRepository(true)}
             colorScheme="teal"
           >
-            <Icon mr="0.5rem" as={BiEditAlt} /> Editar
+            <Icon mr="0.5rem" as={BiEditAlt} /> {strings.description.editButton}
           </Button>
         )}
       </VStack>

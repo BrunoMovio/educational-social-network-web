@@ -3,7 +3,7 @@ import { useAuthenticate } from "@src/domain/account";
 import { Post } from "@src/model";
 import React from "react";
 import { FiFile } from "react-icons/fi";
-import { PostPage } from "./post.component";
+import { PostComponent } from "./post.component";
 
 interface PostViewProps {
   showPost?: Post;
@@ -16,10 +16,10 @@ export const PostView = ({ showPost }: PostViewProps) => {
     <>
       {showPost ? (
         <VStack spacing={6} align="center">
-          <PostPage
+          <PostComponent
             postData={{
               stars: showPost.stars,
-              hasLiked: showPost.likeList.includes(user.id),
+              likeList: showPost.likeList,
               lastUpdateDate: showPost.lastUpdateDate,
               title: showPost.title,
               subtitle: showPost.subtitle,

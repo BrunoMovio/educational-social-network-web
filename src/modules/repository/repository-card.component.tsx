@@ -1,22 +1,22 @@
 import React from "react";
 import { Box, Divider, Heading, HStack, Link, Text } from "@chakra-ui/react";
+
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
 import { Repository } from "@src/model";
 
 interface RepositoryCardProps {
-  repositoryCard: Repository;
+  repository: Repository;
   nickname: string;
 }
 
-const strings = AppStrings.Home.repositoryCards;
+const strings = AppStrings.Repository;
 
 export const RepositoryCard = ({
-  repositoryCard,
+  repository,
   nickname,
 }: RepositoryCardProps) => {
-  const { id, creationDate, lastUpdateDate, title, description } =
-    repositoryCard;
+  const { id, creationDate, lastUpdateDate, title, description } = repository;
 
   return (
     <>

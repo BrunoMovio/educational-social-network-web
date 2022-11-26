@@ -1,34 +1,37 @@
-import { Button, VStack } from "@chakra-ui/react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React, { Dispatch, SetStateAction } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Button, VStack } from "@chakra-ui/react";
+
 import { Input, TextArea } from "@src/components";
-import React, { Dispatch, SetStateAction } from "react";
 import { CreateRepositoryForm, Repository } from "@src/model";
 import { useAuthenticate, useCreateRepository } from "@src/domain/account";
+import { AppStrings } from "@src/strings";
 
-const signInForSchema = yup.object().shape({
-  title: yup.string().required("Título obrigatório").trim(),
-  description: yup.string().trim(),
-});
-
-interface CreateRepositoryComponentProps {
+interface CreateRepositoryProps {
   onSetRepositories: Dispatch<SetStateAction<Repository[]>>;
   onCreationCompleted: () => void;
 }
 
-export function CreateRepositoryComponent({
+const strings = AppStrings.Repository.create;
+
+const repositoryCreateSchema = yup.object().shape({
+  title: yup.string().required(strings.requiredTitle).trim(),
+  description: yup.string().trim(),
+});
+
+export function CreateRepository({
   onSetRepositories,
   onCreationCompleted,
-}: CreateRepositoryComponentProps) {
-  const { register, handleSubmit, reset, formState } =
-    useForm<CreateRepositoryForm>({
-      resolver: yupResolver(signInForSchema),
-    });
-
+}: CreateRepositoryProps) {
   const { createRepository } = useCreateRepository();
   const { user } = useAuthenticate();
 
+  const { register, handleSubmit, reset, formState } =
+    useForm<CreateRepositoryForm>({
+      resolver: yupResolver(repositoryCreateSchema),
+    });
   const errors = formState.errors;
 
   const handleCreateRepository: SubmitHandler<CreateRepositoryForm> = async (
@@ -53,9 +56,13 @@ export function CreateRepositoryComponent({
         spacing={4}
         onSubmit={handleSubmit(handleCreateRepository)}
       >
-        <Input label="Título" error={errors.title} {...register("title")} />
+        <Input
+          label={strings.fields.title}
+          error={errors.title}
+          {...register("title")}
+        />
         <TextArea
-          label="Descrição"
+          label={strings.fields.description}
           error={errors.description}
           {...register("description")}
         />
@@ -66,7 +73,7 @@ export function CreateRepositoryComponent({
           colorScheme="green"
           isLoading={formState.isSubmitting}
         >
-          Criar
+          {strings.createButton}
         </Button>
       </VStack>
     </>

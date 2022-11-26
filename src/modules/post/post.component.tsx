@@ -12,11 +12,12 @@ import {
 import { FaStar } from "react-icons/fa";
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
+import { useAuthenticate } from "@src/domain/account";
 
 interface RepositoryCardProps {
   postData: {
     stars: number;
-    hasLiked: boolean;
+    likeList: string[];
     lastUpdateDate: string;
     title: string;
     subtitle: string;
@@ -27,12 +28,13 @@ interface RepositoryCardProps {
 
 const strings = AppStrings.Home.repositoryCards;
 
-export const PostPage = ({ postData }: RepositoryCardProps) => {
-  const { stars, hasLiked, lastUpdateDate, title, subtitle, text, image } =
+export const PostComponent = ({ postData }: RepositoryCardProps) => {
+  const { stars, likeList, lastUpdateDate, title, subtitle, text, image } =
     postData;
+  const { user } = useAuthenticate();
 
   const [trimText, setTrimText] = React.useState(true);
-  const [liked, setLiked] = React.useState(hasLiked);
+  const [liked, setLiked] = React.useState(likeList.includes(user.id));
 
   const handleUpdateRepositoryStars = () => {
     console.log("update star");
@@ -50,7 +52,7 @@ export const PostPage = ({ postData }: RepositoryCardProps) => {
       <Heading mb="0.25rem" fontSize="2xl" textAlign="start">
         {title}
       </Heading>
-      <Heading mb="0.5rem" fontSize="sm" textAlign='start'>
+      <Heading mb="0.5rem" fontSize="sm" textAlign="start">
         {subtitle}
       </Heading>
       <Text fontSize="sm" mb="1rem" textAlign="justify">

@@ -1,4 +1,4 @@
-import { Post } from "./repository.model";
+import { Post } from "./post.model";
 
 export interface HomePostCardData extends Post {}
 
@@ -12,6 +12,6 @@ export type HomeRecommendationCardData = {
 };
 
 export type HomeData = {
-  mainHomePosts: HomePostCardData[];
+  mainHomePosts: Post[];
   mainRecommendationsPosts: HomeRecommendationCardData[];
 };

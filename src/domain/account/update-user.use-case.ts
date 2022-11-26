@@ -10,6 +10,7 @@ interface UpdateUserData {
   name: string;
   location: Location;
   description: string;
+  career: string;
 }
 
 export const useUpdateUser = (): UseUpdateUser => {
@@ -18,6 +19,7 @@ export const useUpdateUser = (): UseUpdateUser => {
     name,
     location,
     description,
+    career,
   }: UpdateUserData): Promise<User> => {
     const { data } = await nextApi.post("/user/update", {
       input: {
@@ -27,6 +29,7 @@ export const useUpdateUser = (): UseUpdateUser => {
         state: location.state,
         country: location.country,
         description,
+        career,
       },
     });
 
