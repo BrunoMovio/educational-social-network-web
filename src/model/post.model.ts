@@ -39,3 +39,9 @@ export type CreatePostForm = {
   subtitle: string;
   text: string;
 };
+
+export type EditPostForm = {
+  title: string;
+  subtitle: string;
+  text: string;
+};

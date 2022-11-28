@@ -1,12 +1,21 @@
-import { Button, VStack } from "@chakra-ui/react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React, { Dispatch, SetStateAction } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Button, VStack } from "@chakra-ui/react";
+
 import { Input, TextArea } from "@src/components";
-import React, { Dispatch, SetStateAction } from "react";
 import { CreatePostForm, Post } from "@src/model";
-import { useAuthenticate } from "@src/domain/account";
-import { useCreatePost } from "@src/domain/account/create-post.use-case";
+import { useAuthenticate, useCreatePost } from "@src/domain/account";
+import { AppStrings } from "@src/strings";
+
+interface CreatePostComponentProps {
+  onSetPostList: Dispatch<SetStateAction<Post[]>>;
+  onCreationCompleted: () => void;
+  repositoryId: string;
+}
+
+const strings = AppStrings.Post;
 
 const createPostSchema = yup.object().shape({
   title: yup.string().required("Título obrigatório").trim(),
@@ -14,14 +23,8 @@ const createPostSchema = yup.object().shape({
   text: yup.string().required("Texto obrigatório").trim(),
 });
 
-interface CreatePostComponentProps {
-  onSetPost: Dispatch<SetStateAction<Post[]>>;
-  onCreationCompleted: () => void;
-  repositoryId: string;
-}
-
 export function CreatePostComponent({
-  onSetPost,
+  onSetPostList,
   onCreationCompleted,
   repositoryId,
 }: CreatePostComponentProps) {
@@ -42,7 +45,7 @@ export function CreatePostComponent({
       ...credentials,
     });
 
-    onSetPost((prev) => [...prev, newPost]);
+    onSetPostList((prev) => [...prev, newPost]);
 
     reset();
     onCreationCompleted();
@@ -70,7 +73,7 @@ export function CreatePostComponent({
           colorScheme="green"
           isLoading={formState.isSubmitting}
         >
-          Criar
+          {strings.create.createButton}
         </Button>
       </VStack>
     </>

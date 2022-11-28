@@ -1,3 +1,3 @@
-export * from "./post-view";
-export * from "./post-list";
-export * from "./post.component";
+export * from "./post-view.component";
+export * from "./post-list.component";
+export * from "./post-static.component";

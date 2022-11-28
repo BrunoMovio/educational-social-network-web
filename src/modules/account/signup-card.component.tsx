@@ -1,9 +1,10 @@
-import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
+
 import { Input } from "@src/components";
-import React from "react";
 import { AppStrings } from "@src/strings";
 import { AccountSignUpForm } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";

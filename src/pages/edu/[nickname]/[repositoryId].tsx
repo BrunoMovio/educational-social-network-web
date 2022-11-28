@@ -30,10 +30,11 @@ interface ServerSideRepositoryParams extends ParsedUrlQuery {
 
 export default function RepositoryPage({
   repository: repositoryProps,
-  posts,
+  posts: postsProps,
 }: RepositoryProps) {
   const { logged, loading } = useAuthenticate();
 
+  const [postList, setPostList] = React.useState<Post[]>(postsProps);
   const [post, setPost] = React.useState<Post>();
 
   const [repository, setRepository] =
@@ -81,15 +82,21 @@ export default function RepositoryPage({
             )}
 
             <PostList
-              posts={posts}
+              posts={postList}
+              nickname={repository.repositoryNickname}
               repositoryId={repository.id}
+              onSetPostList={setPostList}
               onSetShowPost={setPost}
             />
           </VStack>
         </GridItem>
 
         <GridItem colStart={3} colEnd={6}>
-          <PostView showPost={post} />
+          <PostView
+            post={post}
+            onEditPost={setPost}
+            onEditPostList={setPostList}
+          />
         </GridItem>
       </Grid>
     </>

@@ -42,7 +42,7 @@ export default function ProfilePage({ user, repositories }: ProfileProps) {
 
       <Grid templateColumns="repeat(5, 1fr)" mx="1rem" pt="1rem">
         <GridItem colStart={1} colEnd={3}>
-          <ProfileDescription userData={user} />
+          <ProfileDescription user={user} />
         </GridItem>
 
         <GridItem colStart={3} colEnd={6}>

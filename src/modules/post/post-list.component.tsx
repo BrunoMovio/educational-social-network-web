@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Divider,
@@ -15,26 +16,34 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { Post } from "@src/model";
-import React from "react";
 import { FiBookmark } from "react-icons/fi";
+
+import { Post } from "@src/model";
 import { CreatePostComponent } from "./create-post.component";
+import { useAuthenticate } from "@src/domain/account";
+import { AppStrings } from "@src/strings";
 
 interface PostListProps {
   posts: Post[];
+  onSetPostList: React.Dispatch<React.SetStateAction<Post[]>>;
   onSetShowPost: (data: Post) => void;
   repositoryId: string;
+  nickname: string;
 }
 
+const strings = AppStrings.Post;
+
 export const PostList = ({
-  posts: postsProps,
+  posts,
+  onSetPostList,
   onSetShowPost,
   repositoryId,
+  nickname,
 }: PostListProps) => {
+  const { user } = useAuthenticate();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-
-  const [posts, setPosts] = React.useState<Post[]>(postsProps);
 
   const PostTopic = ({ post }: { post: Post }) => {
     return (
@@ -55,15 +64,17 @@ export const PostList = ({
       <VStack spacing={4} align="start">
         <HStack spacing={6}>
           <Heading size="md">Postagens</Heading>
-          <Button
-            leftIcon={<Icon as={FiBookmark} />}
-            colorScheme="green"
-            size="xs"
-            justifyContent="flex-end"
-            onClick={onOpen}
-          >
-            Criar
-          </Button>
+          {user?.nickname === nickname && (
+            <Button
+              leftIcon={<Icon as={FiBookmark} />}
+              colorScheme="green"
+              size="xs"
+              justifyContent="flex-end"
+              onClick={onOpen}
+            >
+              {strings.create.createButton}
+            </Button>
+          )}
         </HStack>
 
         <Divider />
@@ -81,12 +92,12 @@ export const PostList = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="blue.900" fontSize="3xl">
-            Criar novo post
+            {strings.create.creationTitle}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <CreatePostComponent
-              onSetPost={setPosts}
+              onSetPostList={onSetPostList}
               onCreationCompleted={onClose}
               repositoryId={repositoryId}
             />

@@ -1,3 +1,7 @@
+import React from "react";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Button,
   Link,
@@ -12,13 +16,10 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { FiLock, FiMail } from "react-icons/fi";
+
 import { Input } from "@src/components";
-import React from "react";
-import { SignUpCard } from "./signup-card";
+import { SignUpCard } from "./signup-card.component";
 import { AppStrings } from "@src/strings";
 import { AccountLoginForm } from "@src/model";
 import { useAuthenticate } from "@src/domain/account";

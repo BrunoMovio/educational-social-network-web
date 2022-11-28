@@ -1,15 +1,16 @@
-import { User } from "@src/model";
 import React from "react";
-import { ProfileDescriptionEdit } from "./profile-description-edit";
-import { ProfileDescriptionStatic } from "./profile-description-static";
+
+import { User } from "@src/model";
+import { ProfileDescriptionEdit } from "./profile-description-edit.component";
+import { ProfileDescriptionStatic } from "./profile-description-static.component";
 
 interface ProfileDescriptionProps {
-  userData: User;
+  user: User;
 }
 
 export const ProfileDescription = (props: ProfileDescriptionProps) => {
   const [editProfile, setEditProfile] = React.useState(false);
-  const [profile, setProfile] = React.useState<User>(props.userData);
+  const [profile, setProfile] = React.useState<User>(props.user);
 
   return (
     <>

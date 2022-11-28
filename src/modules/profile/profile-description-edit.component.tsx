@@ -1,4 +1,7 @@
 import React from "react";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Avatar,
   Box,
@@ -25,27 +28,22 @@ import {
   BiUser,
 } from "react-icons/bi";
 import { HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
+
 import { useAuthenticate, useUpdateUser } from "@src/domain/account";
 import { EditProfileForm, User } from "@src/model";
-import * as yup from "yup";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { AppStrings } from "@src/strings";
 import { Input } from "@src/components";
 
 interface ProfileDescriptionEditProps {
   profile: User;
-  editProfile: (state: User) => void;
-  onEdit: (state: boolean) => void;
+  editProfile: (data: User) => void;
+  onEdit: (data: boolean) => void;
 }
 
-const profileStrings = AppStrings.Profile;
+const strings = AppStrings.Profile;
 
 const profileEditSchema = yup.object().shape({
-  name: yup
-    .string()
-    .required(profileStrings.profileRequirements.requiredName)
-    .trim(),
+  name: yup.string().required(strings.profileRequirements.requiredName).trim(),
   description: yup.string().trim(),
   career: yup.string().trim(),
   city: yup.string().trim(),
@@ -69,7 +67,7 @@ export const ProfileDescriptionEdit = ({
   });
   const errors = formState.errors;
 
-  const handleEditUserData: SubmitHandler<EditProfileForm> = async (
+  const handleEditUser: SubmitHandler<EditProfileForm> = async (
     credentials
   ) => {
     const profile = await updateUser({ id: user?.id, ...credentials });
@@ -89,13 +87,13 @@ export const ProfileDescriptionEdit = ({
         spacing={4}
         alignItems="left"
         as="form"
-        onSubmit={handleSubmit(handleEditUserData)}
+        onSubmit={handleSubmit(handleEditUser)}
       >
         <Avatar size="2xl" mb="1rem" name={profile.name} alignSelf="center" />
         <Box>
           <Input
             variant="flushed"
-            placeholder={profileStrings.profilePlaceholder.name}
+            placeholder={strings.profilePlaceholder.name}
             icon={BiUser}
             value={profile.name}
             error={errors.name}
@@ -107,7 +105,7 @@ export const ProfileDescriptionEdit = ({
         </Box>
         <Input
           variant="flushed"
-          placeholder={profileStrings.profilePlaceholder.description}
+          placeholder={strings.profilePlaceholder.description}
           icon={BiDetail}
           value={profile.description}
           error={errors.description}
@@ -117,7 +115,7 @@ export const ProfileDescriptionEdit = ({
           <Flex align="center">
             <Input
               variant="flushed"
-              placeholder={profileStrings.profilePlaceholder.career}
+              placeholder={strings.profilePlaceholder.career}
               value={profile.career}
               icon={BiBuildings}
               error={errors.career}
@@ -127,7 +125,7 @@ export const ProfileDescriptionEdit = ({
           <Flex align="center">
             <Input
               variant="flushed"
-              placeholder={profileStrings.profilePlaceholder.city}
+              placeholder={strings.profilePlaceholder.city}
               value={profile.location.city}
               icon={HiOutlineLocationMarker}
               error={errors.location?.city}
@@ -137,7 +135,7 @@ export const ProfileDescriptionEdit = ({
           <Flex align="center">
             <Input
               variant="flushed"
-              placeholder={profileStrings.profilePlaceholder.state}
+              placeholder={strings.profilePlaceholder.state}
               value={profile.location.state}
               icon={HiOutlineLocationMarker}
               error={errors.location?.state}
@@ -145,7 +143,7 @@ export const ProfileDescriptionEdit = ({
             />
             <Input
               variant="flushed"
-              placeholder={profileStrings.profilePlaceholder.country}
+              placeholder={strings.profilePlaceholder.country}
               value={profile.location.country}
               icon={HiOutlineLocationMarker}
               error={errors.location?.country}
@@ -165,11 +163,11 @@ export const ProfileDescriptionEdit = ({
               colorScheme="teal"
               isLoading={formState.isSubmitting}
             >
-              <Icon mr="0.5rem" as={BiCheck} /> Salvar
+              <Icon mr="0.5rem" as={BiCheck} /> {strings.edit.editButton}
             </Button>
 
             <Button variant="outline" colorScheme="red" onClick={onOpen}>
-              <Icon mr="0.5rem" as={BiTrash} /> Deletar
+              <Icon mr="0.5rem" as={BiTrash} /> {strings.edit.deleteButton}
             </Button>
           </HStack>
         )}
@@ -179,17 +177,14 @@ export const ProfileDescriptionEdit = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="blue.900" fontSize="lg">
-            Deseja mesmo deletar sua conta?
+            {strings.edit.onDelete.deleteConfirmation}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
-              <Text>
-                Todos os seus repositórios, posts e contribuições para a
-                comunidade serão deletados, tem certeza que deseja continuar?
-              </Text>
+              <Text>{strings.edit.onDelete.confirmationWarning}</Text>
               <Button w="100%" colorScheme="teal" onClick={onClose}>
-                Não deletar
+                {strings.edit.onDelete.declineButton}
               </Button>
 
               <Button
@@ -198,7 +193,7 @@ export const ProfileDescriptionEdit = ({
                 colorScheme="red"
                 onClick={handleDeleteUser}
               >
-                Deletar
+                {strings.edit.onDelete.deleteButton}
               </Button>
             </VStack>
           </ModalBody>

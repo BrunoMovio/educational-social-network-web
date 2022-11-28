@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Heading,
@@ -13,19 +14,20 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { FiBookmark } from "react-icons/fi";
+
 import { useAuthenticate } from "@src/domain/account";
 import { Repository, User } from "@src/model";
 import { AppStrings } from "@src/strings";
-import React from "react";
-import { FiBookmark } from "react-icons/fi";
-import { CreateRepositoryComponent, RepositoryCard } from "../repository";
+import { CreateRepository, RepositoryCard } from "@src/modules/repository";
 
 interface RepositoryListProps {
   user: User;
   repositoryList: Repository[];
 }
 
-const strings = AppStrings.Profile;
+const profileStrings = AppStrings.Profile;
+const repositoryStrings = AppStrings.Repository;
 
 export const RepositoryList = ({
   user,
@@ -45,7 +47,7 @@ export const RepositoryList = ({
     <>
       <VStack spacing={6} py="3rem" px="3rem" w="100%" align="start">
         <HStack spacing={4} mb="2rem">
-          <Heading size="md">{strings.myRepositories}</Heading>
+          <Heading size="md">{profileStrings.myRepositories}</Heading>
           {loggedUser?.nickname === nickname && (
             <Button
               leftIcon={<Icon as={FiBookmark} />}
@@ -54,7 +56,7 @@ export const RepositoryList = ({
               justifyContent="flex-end"
               onClick={onOpen}
             >
-              Criar
+              {repositoryStrings.create.createButton}
             </Button>
           )}
         </HStack>
@@ -71,11 +73,11 @@ export const RepositoryList = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader color="blue.900" fontSize="2xl">
-            Criar novo repositório
+            {repositoryStrings.create.creationTitle}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CreateRepositoryComponent
+            <CreateRepository
               onSetRepositories={setRepositories}
               onCreationCompleted={onClose}
             />
