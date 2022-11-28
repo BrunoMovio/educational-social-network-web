@@ -20,7 +20,7 @@ import { FiBookmark } from "react-icons/fi";
 
 import { Post } from "@src/model";
 import { CreatePostComponent } from "./create-post.component";
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 import { AppStrings } from "@src/strings";
 
 interface PostListProps {

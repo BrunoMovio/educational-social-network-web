@@ -10,7 +10,7 @@ import {
 import { AppStrings } from "@src/strings";
 import { Header } from "@src/components";
 import Router from "next/router";
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 
 const strings = AppStrings.Home.postsRecommendations;
 

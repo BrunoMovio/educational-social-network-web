@@ -12,7 +12,7 @@ import {
 import { BiBuildings, BiEditAlt } from "react-icons/bi";
 import { HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
 
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 import { User } from "@src/model";
 import { AppStrings } from "@src/strings";
 

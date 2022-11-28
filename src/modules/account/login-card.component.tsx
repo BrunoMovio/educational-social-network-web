@@ -22,7 +22,7 @@ import { Input } from "@src/components";
 import { SignUpCard } from "./signup-card.component";
 import { AppStrings } from "@src/strings";
 import { AccountLoginForm } from "@src/model";
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 
 const strings = AppStrings.Login;
 const signUpStrings = AppStrings.SignUp;

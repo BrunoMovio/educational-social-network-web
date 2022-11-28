@@ -24,7 +24,7 @@ import { BiCheck, BiTrash } from "react-icons/bi";
 
 import { EditRepositoryForm, Repository } from "@src/model";
 import { Input, TextArea } from "@src/components";
-import { useAuthenticate, useUpdateRepository } from "@src/domain/account";
+import { useAuthenticate, useUpdateRepository } from "@src/domain";
 import { AppStrings } from "@src/strings";
 
 interface RepositoryDescriptionEditProps {

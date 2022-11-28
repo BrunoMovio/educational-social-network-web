@@ -4,7 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import { theme } from "@src/styles";
 import { initFirebaseConfig } from "@src/services";
-import { AuthProvider } from "@src/domain/account";
+import { AuthProvider } from "@src/domain";
 
 function MyApp({ Component, pageProps }: AppProps) {
   initFirebaseConfig();

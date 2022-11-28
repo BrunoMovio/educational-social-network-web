@@ -7,7 +7,7 @@ import { Button, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { Input } from "@src/components";
 import { AppStrings } from "@src/strings";
 import { AccountSignUpForm } from "@src/model";
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 
 const strings = AppStrings.SignUp;
 

@@ -6,7 +6,7 @@ import { Button, VStack } from "@chakra-ui/react";
 
 import { Input, TextArea } from "@src/components";
 import { CreateRepositoryForm, Repository } from "@src/model";
-import { useAuthenticate, useCreateRepository } from "@src/domain/account";
+import { useAuthenticate, useCreateRepository } from "@src/domain";
 import { AppStrings } from "@src/strings";
 
 interface CreateRepositoryProps {

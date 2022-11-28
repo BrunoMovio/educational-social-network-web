@@ -6,7 +6,7 @@ import { Flex, Grid, GridItem, Image } from "@chakra-ui/react";
 
 import { Header } from "@src/components";
 import { Repository, RepositoryDatasource, User } from "@src/model";
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 import { api } from "@src/services";
 import { ProfileDescription, RepositoryList } from "@src/modules/profile";
 

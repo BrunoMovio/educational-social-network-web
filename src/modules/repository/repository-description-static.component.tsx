@@ -13,7 +13,7 @@ import { BiEditAlt } from "react-icons/bi";
 
 import { AppStrings, replaceTemplateString } from "@src/strings";
 import { getLowerCasePastTime } from "@src/utils";
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 import { Repository } from "@src/model";
 
 interface RepositoryDescriptionStaticProps {

@@ -6,7 +6,7 @@ import { Button, VStack } from "@chakra-ui/react";
 
 import { Input, TextArea } from "@src/components";
 import { CreatePostForm, Post } from "@src/model";
-import { useAuthenticate, useCreatePost } from "@src/domain/account";
+import { useAuthenticate, useCreatePost } from "@src/domain";
 import { AppStrings } from "@src/strings";
 
 interface CreatePostComponentProps {

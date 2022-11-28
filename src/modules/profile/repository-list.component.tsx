@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FiBookmark } from "react-icons/fi";
 
-import { useAuthenticate } from "@src/domain/account";
+import { useAuthenticate } from "@src/domain";
 import { Repository, User } from "@src/model";
 import { AppStrings } from "@src/strings";
 import { CreateRepository, RepositoryCard } from "@src/modules/repository";

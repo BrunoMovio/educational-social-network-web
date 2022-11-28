@@ -20,7 +20,7 @@ import {
 import { BiCheck, BiTrash } from "react-icons/bi";
 
 import { AppStrings } from "@src/strings";
-import { useAuthenticate, useUpdatePost } from "@src/domain/account";
+import { useAuthenticate, useUpdatePost } from "@src/domain";
 import { EditPostForm, Post } from "@src/model";
 import { Input, TextArea } from "@src/components";
 

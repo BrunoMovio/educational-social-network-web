@@ -29,7 +29,7 @@ import {
 } from "react-icons/bi";
 import { HiOutlineMail, HiOutlineLocationMarker } from "react-icons/hi";
 
-import { useAuthenticate, useUpdateUser } from "@src/domain/account";
+import { useAuthenticate, useUpdateUser } from "@src/domain";
 import { EditProfileForm, User } from "@src/model";
 import { AppStrings } from "@src/strings";
 import { Input } from "@src/components";
