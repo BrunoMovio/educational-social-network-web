@@ -20,12 +20,17 @@ import { Post } from "@src/model";
 
 interface RepositoryCardProps {
   post: Post;
+  notInRepositoryView?: boolean;
   onEditingPost?: (data: boolean) => void;
 }
 
 const strings = AppStrings.Post;
 
-export const PostStatic = ({ post, onEditingPost }: RepositoryCardProps) => {
+export const PostStatic = ({
+  post,
+  onEditingPost,
+  notInRepositoryView,
+}: RepositoryCardProps) => {
   const {
     repositoryNickname,
     stars,
@@ -113,7 +118,7 @@ export const PostStatic = ({ post, onEditingPost }: RepositoryCardProps) => {
         </HStack>
       </Box>
 
-      {user?.nickname === repositoryNickname && (
+      {user?.nickname === repositoryNickname && !notInRepositoryView && (
         <Button
           variant="outline"
           onClick={() => onEditingPost && onEditingPost(true)}

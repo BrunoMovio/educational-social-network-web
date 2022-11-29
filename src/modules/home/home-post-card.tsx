@@ -12,7 +12,7 @@ interface PostComponentProps {
 const strings = AppStrings.Home.repositoryCards;
 
 export const HomePostCard = ({ post }: PostComponentProps) => {
-  const { repositoryNickname, creationDate, repositoryTitle } = post;
+  const { repositoryNickname, creationDate, repositoryId } = post;
 
   return (
     <Box maxW="70%" mx="auto">
@@ -25,14 +25,14 @@ export const HomePostCard = ({ post }: PostComponentProps) => {
             <strong>{repositoryNickname}</strong>
           </Link>
           {strings.sharedRepository}
-          <Link href={`/edu/${repositoryNickname}/${repositoryTitle}`}>
+          <Link href={`/edu/${repositoryNickname}/${repositoryId}`}>
             <strong>{strings.post}</strong>
           </Link>
         </Text>
         <Text fontSize="xs">{getPastTime(new Date(creationDate))}</Text>
       </Flex>
 
-      <PostStatic post={post} />
+      <PostStatic post={post} notInRepositoryView />
 
       <Divider my="1.5rem" />
     </Box>
