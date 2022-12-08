@@ -44,6 +44,7 @@ export const useGetPostFeed = (): UsePostFeed => {
             image: post.image,
             stars: post.likes,
             likeList: post.usersLiked,
+            category: post.tags?.category,
           };
         }),
         hasNextPage: responsePosts?.length === 10,

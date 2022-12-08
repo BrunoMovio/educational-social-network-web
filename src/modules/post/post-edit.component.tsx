@@ -40,6 +40,8 @@ const postEditSchema = yup.object().shape({
     .required(strings.create.postRequirementes.subtitle)
     .trim(),
   text: yup.string().required(strings.create.postRequirementes.text).trim(),
+  image: yup.string().trim(),
+  category: yup.string().trim(),
 });
 
 export const PostEdit = ({
@@ -48,7 +50,8 @@ export const PostEdit = ({
   onEditPostList,
   onEditPost,
 }: RepositoryCardProps) => {
-  const { id, repositoryNickname, title, subtitle, text } = post;
+  const { id, repositoryNickname, title, subtitle, text, image, category } =
+    post;
   const { user } = useAuthenticate();
   const { updatePost } = useUpdatePost();
 
@@ -91,6 +94,18 @@ export const PostEdit = ({
           value={subtitle}
           error={errors.subtitle}
           {...register("subtitle")}
+        />
+        <Input
+          label="Link de Imagem"
+          value={image}
+          error={errors.image}
+          {...register("image")}
+        />
+        <Input
+          label="Categoria"
+          value={category}
+          error={errors.category}
+          {...register("category")}
         />
         <TextArea
           height="500px"

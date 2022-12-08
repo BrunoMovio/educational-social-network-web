@@ -21,6 +21,8 @@ const createPostSchema = yup.object().shape({
   title: yup.string().required("Título obrigatório").trim(),
   subtitle: yup.string().required("Subtítulo obrigatório").trim(),
   text: yup.string().required("Texto obrigatório").trim(),
+  image: yup.string().trim(),
+  category: yup.string().trim(),
 });
 
 export function CreatePostComponent({
@@ -59,6 +61,16 @@ export function CreatePostComponent({
           label="Subtítulo"
           error={errors.subtitle}
           {...register("subtitle")}
+        />
+        <Input
+          label="Link de Imagem"
+          error={errors.image}
+          {...register("image")}
+        />
+        <Input
+          label="Categoria"
+          error={errors.category}
+          {...register("category")}
         />
         <TextArea
           height="500px"
