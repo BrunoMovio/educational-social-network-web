@@ -159,7 +159,14 @@ const Dashboard: NextPage = () => {
         <GridItem colStart={2} colEnd={5}>
           <Box maxW="70%" mx="auto" mb="2rem">
             <Menu>
-              <MenuButton colorScheme="teal" variant="ghost" as={Button}>
+              <MenuButton
+                p="0"
+                _hover={{ bg: "transparent" }}
+                _focus={{ bg: "transparent" }}
+                colorScheme="teal"
+                variant="ghost"
+                as={Button}
+              >
                 <Icon as={FiFilter} mr="0.5rem" />
                 Filtrar categorias
               </MenuButton>
