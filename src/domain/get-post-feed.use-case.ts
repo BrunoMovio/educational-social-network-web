@@ -1,6 +1,6 @@
 import { Post, PostDatasource } from "@src/model";
 import { nextApi } from "@src/services";
-import { useCallback } from "react";
+import React from "react";
 
 interface UsePostFeed {
   getPosts: (data: PostFeedUseCaseParams) => Promise<GetPostsResponse>;
@@ -17,7 +17,7 @@ interface GetPostsResponse {
 }
 
 export const useGetPostFeed = (): UsePostFeed => {
-  const getPosts = useCallback(
+  const getPosts = React.useCallback(
     async ({
       userId,
       pageNumber,

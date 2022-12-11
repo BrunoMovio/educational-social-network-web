@@ -4,8 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button, VStack } from "@chakra-ui/react";
 
-import { Input, TextArea } from "@src/components";
-import { CreatePostForm, Post } from "@src/model";
+import { Input, Select, TextArea } from "@src/components";
+import { CreatePostForm, filterTypes, Post } from "@src/model";
 import { useAuthenticate, useCreatePost } from "@src/domain";
 import { AppStrings } from "@src/strings";
 
@@ -67,8 +67,9 @@ export function CreatePostComponent({
           error={errors.image}
           {...register("image")}
         />
-        <Input
+        <Select
           label="Categoria"
+          options={filterTypes}
           error={errors.category}
           {...register("category")}
         />

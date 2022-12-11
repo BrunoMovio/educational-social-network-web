@@ -21,8 +21,8 @@ import { BiCheck, BiTrash } from "react-icons/bi";
 
 import { AppStrings } from "@src/strings";
 import { useAuthenticate, useUpdatePost } from "@src/domain";
-import { EditPostForm, Post } from "@src/model";
-import { Input, TextArea } from "@src/components";
+import { EditPostForm, filterTypes, Post } from "@src/model";
+import { Input, Select, TextArea } from "@src/components";
 
 interface RepositoryCardProps {
   post: Post;
@@ -101,9 +101,10 @@ export const PostEdit = ({
           error={errors.image}
           {...register("image")}
         />
-        <Input
+        <Select
           label="Categoria"
-          value={category}
+          placeholder={category}
+          options={filterTypes}
           error={errors.category}
           {...register("category")}
         />
